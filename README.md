@@ -13,7 +13,8 @@ todos os pacientes sem esquecer de um ou de outro.
 Para facilitar a vida do profissional de saúde, desenvolva uma aplicação que possua
 uma tela simples para cadastro e listagem de atividades e uma modal para cadastro de
 paciente.
-Layout: [https://shorturl.at/xyEGK]
+
+- Layout: https://shorturl.at/xyEGK
 
 
 ### Regras:
