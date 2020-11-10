@@ -16,16 +16,14 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    classMethods: {
-      associate: (models) => {
-        Paciente.hasMany(models.Atividades, { foreignKey: 'codigoPaciente' })
-      }
-    }
-  }, {
     timestamps: false,
     underscored: true,
     freezeTableName: true
   })
+
+  Paciente.associate = (models) => {
+    Paciente.hasMany(models.Atividades, { foreignKey: 'codigoPaciente', as: 'Atividades' })
+  }
 
   return Paciente
 }

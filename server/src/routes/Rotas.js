@@ -1,24 +1,22 @@
 
-const ROTAS = (app, rota, Controller) => {
+const ROTAS = (app, rota, controller) => {
   app.route(`/${rota}`)
     .get((req, res) => {
-      console.log('teste')
-      res.status(200).send()
+      controller.getAll(req, res)
     })
     .post((req, res) => {
-      res.status(301).send()
+      controller.create(req, res)
     })
 
   app.route(`/${rota}/:id`)
     .get((req, res) => {
-      console.log('teste com id')
-      res.status(200).send(req.params.id)
+      controller.findOne(req, res)
     })
     .put((req, res) => {
-      res.status(200).send()
+      controller.update(req, res)
     })
     .delete((req, res) => {
-      res.status(200).send()
+      controller.delete(req, res)
     })
 }
 

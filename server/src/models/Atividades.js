@@ -28,16 +28,14 @@ export default (sequelize, DataTypes) => {
       defaultValue: 'Aberto'
     }
   }, {
-    classMethods: {
-      associate: (models) => {
-        Atividades.belongsTo(models.Paciente, { foreignKey: 'codigoPaciente' })
-      }
-    }
-  }, {
     timestamps: true,
     underscored: true,
     freezeTableName: true
   })
+
+  Atividades.associate = (models) => {
+    Atividades.belongsTo(models.Paciente, { foreignKey: 'codigoPaciente', as: 'Paciente' })
+  }
 
   return Atividades
 }

@@ -1,5 +1,7 @@
+import { AtividadesController } from '../controllers/AtividadesController'
 import { ROTAS } from './Rotas'
 
 export default app => {
-  ROTAS(app, 'atividades', undefined)
+  const controller = new AtividadesController(app)
+  ROTAS(app, 'atividades', controller)
 }
