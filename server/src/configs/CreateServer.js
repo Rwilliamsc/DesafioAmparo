@@ -14,7 +14,7 @@ export const CREATE_SERVER = () => {
   app.use(cors())
 
   // Atribuição da porta onde será eposta a API
-  app.set('port', process.env.PORT)
+  app.set('port', process.env.PORT || '4000')
 
   return app
 }
