@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Paciente = sequelize.define('Paciente', {
     codigo: {
       type: DataTypes.INTEGER(11),
@@ -16,7 +16,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    timestamps: true,
+    classMethods: {
+      associate: (models) => {
+        Paciente.hasMany(models.Atividades, { foreignKey: 'codigoPaciente' })
+      }
+    }
+  }, {
+    timestamps: false,
     underscored: true,
     freezeTableName: true
   })

@@ -56,5 +56,6 @@ export const DATA_SOURCE = (db) => {
     database.models = loadModels(sequelize)
     sequelize.sync().done(() => database)
   }
+
   return database
 }

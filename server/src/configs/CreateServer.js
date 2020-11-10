@@ -13,5 +13,8 @@ export const CREATE_SERVER = () => {
   // Permite acesso externo
   app.use(cors())
 
+  // Atribuição da porta onde será eposta a API
+  app.set('port', process.env.PORT)
+
   return app
 }
