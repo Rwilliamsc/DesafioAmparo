@@ -62,7 +62,7 @@
         <v-card-text>
           <v-data-table
             :headers="headers"
-            :items="desserts"
+            :items="itensTab"
             :page.sync="page"
             :items-per-page="itemsPerPage"
             class="elevation-1"
@@ -114,7 +114,6 @@ export default {
       {
         text: "Paciente",
         align: "start",
-        sortable: false,
         value: "paciente",
       },
       { text: "CPF", value: "cpf" },
@@ -122,7 +121,7 @@ export default {
       { text: "Data", value: "data" },
       { text: "Status", value: "status" },
     ],
-    desserts: [
+    itensTab: [
       {
         paciente: "Frozen Yogurt",
         cpf: 159,

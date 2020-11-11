@@ -7,7 +7,6 @@ class Controller {
 
   async getAll (req, res) {
     try {
-      console.log(this.modelo)
       const response = await this.modelo.findAll({ include: this.includesConsulta })
 
       return res.status(HttpStatus.OK).json(response)
