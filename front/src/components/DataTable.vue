@@ -3,7 +3,7 @@
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="itensTab"
+        :items="itens"
         :page.sync="page"
         :items-per-page="itemsPerPage"
         class="elevation-1"
@@ -27,6 +27,12 @@
 <script>
 export default {
   name: "DataTable",
+  props: {
+    itens: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data: () => ({
     headers: [
       {
@@ -47,62 +53,6 @@ export default {
         data: "",
         status: 24,
       },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
     ],
     page: 1,
     pageCount: 0,
@@ -110,7 +60,7 @@ export default {
   }),
   methods: {
     itemSelected(ev) {
-      console.log(ev);
+      this.$emit("selected", ev);
     },
   },
 };
