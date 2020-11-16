@@ -30,45 +30,33 @@
         <div>
           <div class="d-flex my-4" flat tile>
             <v-text-field
+              v-model="cpfFiltro"
               label="CPF do Paciente"
               class="mx-2"
               outlined
               dense
               v-mask="'###.###.###-##'" 
             ></v-text-field>
-            <v-text-field
-              label="Status Aprazamento"
+            
+            <v-select
+              v-model="statusFiltro"
+              :items="status"
+              label="Status"
+              dense
+              outlined
+            ></v-select>
+
+             <v-text-field
+              v-model="date"
+              label="Data"
               class="mx-2"
               outlined
               dense
+              v-mask="'##/##/####'" 
             ></v-text-field>
-            <v-menu
-              v-model="menu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dataFormatada"
-                  label="Data"
-                  class="mx-2"
-                  readonly
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-                  dense
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="date"
-                @input="menu = false"
-                locale="pt-BR"
-              ></v-date-picker>
-            </v-menu>
-            <v-btn color="success">Filtrar</v-btn>
+
+            <v-btn color="success" @click="filtrar" class="mr-1">Filtrar</v-btn>
+            <v-btn color="success" @click="limpar" v-if="isFiltro">Limpar</v-btn>
           </div>
         </div>
       </v-row>
@@ -88,6 +76,7 @@ import NovoPaciente from "./components/NovoPaciente";
 import NovaAtividade from "./components/NovaAtividade";
 import AtividadesController from "./controllers/AtividadesController";
 import ListaAtividades from "./classes/ListaAtividades";
+import { filter, cloneDeep } from 'lodash'
 import {mask} from 'vue-the-mask'
 
 export default {
@@ -114,20 +103,21 @@ export default {
         href: "breadcrumbs_link_1",
       },
     ],
+
     menu: false,
-    date: new Date().toISOString().substr(0, 10),
     abrirNovoPaciente: false,
     abrirNovaAtividade: false,
-    itensTabela: []
+    status: ['Aberto', 'Finalizado', 'Atrasado'],
+    itensTabela: [],
+
+    date: '',
+    cpfFiltro: '',
+    statusFiltro: '',
+    cloneItens: [],
+    isFiltro: false
   }),
   mounted(){
     this.atualizar()
-  },
-  computed: {
-    dataFormatada() {
-      const [ano, mes, dia] = this.date.split("-");
-      return `${dia}/${mes}/${ano}`;
-    },
   },
   methods: {
     novoPaciente() {
@@ -149,6 +139,25 @@ export default {
 
         console.error(error.message)
       }
+    },
+
+    filtrar (){
+      this.cloneItens = cloneDeep(this.itensTabela)
+      this.isFiltro = true
+      const obj = {}
+      if (this.cpfFiltro) obj['cpf']= this.cpfFiltro
+      if (this.statusFiltro) obj['status']= this.statusFiltro 
+      if (this.date) obj['data']= this.date
+
+      this.itensTabela = filter(this.itensTabela, obj)
+    },
+
+    limpar(){
+      this.atualizar()
+      this.cpfFiltro = ''
+      this.statusFiltro = ''
+      this.date = ''
+      this.isFiltro = false
     }
   },
 };

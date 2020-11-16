@@ -45,15 +45,6 @@ export default {
       { text: "Data", value: "data" },
       { text: "Status", value: "status" },
     ],
-    itensTab: [
-      {
-        paciente: "Frozen Yogurt",
-        cpf: 159,
-        atividade: 6.0,
-        data: "",
-        status: 24,
-      },
-    ],
     page: 1,
     pageCount: 0,
     itemsPerPage: 5,
