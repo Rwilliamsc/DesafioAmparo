@@ -23,17 +23,28 @@
               :items="pacientes"
               :loading="isLoading"
               :search-input.sync="search"
-              color="white"
               hide-no-data
               hide-selected
               item-text="nome"
               item-value="codigo"
-              label="Nme/CPF"
+              label="Nome/CPF"
               placeholder="Digite o nome ou CPF do paciente"
               return-object
               outlined
               dense
-            ></v-autocomplete>
+            >
+              <template v-slot:item="data">
+                <template v-if="typeof data.item !== 'object'">
+                  <v-list-item-content v-text="data.item"></v-list-item-content>
+                </template>
+                <template v-else>
+                  <v-list-item-content>
+                    <v-list-item-title v-html="data.item.nome"></v-list-item-title>
+                    <v-list-item-subtitle v-html="data.item.cpf"></v-list-item-subtitle>
+                  </v-list-item-content>
+                </template>
+              </template>
+            </v-autocomplete>
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -85,7 +96,7 @@
             ></v-textarea>
           </v-col>
         </v-row>
-        <v-row no-gutters>
+        <v-row no-gutters class="justify-end" >
           <v-col cols="12" sm="6" class="pl-1 block text-end">
             <v-btn color="success" @click="cadastrar" block>Cadastrar</v-btn>
           </v-col>
@@ -97,6 +108,8 @@
 
 <script>
 import Atividade from "../classes/Atividade";
+import PacienteController from '../controllers/PacienteController'
+import AtividadesController from '../controllers/AtividadesController'
 import {mask} from 'vue-the-mask'
 export default {
   directives: {
@@ -122,7 +135,7 @@ export default {
     dataFormatada() {
       const [ano, mes, dia] = this.date.split("-");
       return `${dia}/${mes}/${ano}`;
-    },
+    }
   },
   watch:{
     abrir(newValue){
@@ -132,14 +145,41 @@ export default {
         return
       }
       this.dialog = false
+    },
+
+    async search(newValue){
+      if (!newValue) return
+
+      if (newValue.length > 3) {
+        try {
+          const paciente = new PacienteController()
+          this.isLoading = true
+          const resultado = await paciente.BuscarPaciente(newValue)
+          this.pacientes = resultado.data
+        } catch (error) {
+          console.error(error.message)
+        } finally{
+          this.isLoading = false
+        }
+      }
     }
   },
   methods:{
     
-    cadastrar() {
-      this.atividade.dataVencimento = this.dataFormatada
-      console.log(this.atividade)
-      this.fechar()
+    async cadastrar() {
+      try {
+        const controller = new AtividadesController()
+        this.atividade.dataVencimento = new Date(this.dataFormatada.split('/').reverse().join('-')).toISOString().substr(0, 10)
+        this.atividade.codigoPaciente = this.atividade.paciente.codigo
+        delete this.atividade.codigo
+        await controller.gravarAtividade(this.atividade)
+
+        this.$emit('refresh')
+      } catch (error) {
+        console.error(error.message)
+      } finally {
+        this.fechar()
+      }
     },
 
     fechar(){

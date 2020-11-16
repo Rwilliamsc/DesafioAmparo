@@ -73,13 +73,11 @@
         </div>
       </v-row>
 
-      <data-table />
+      <data-table :itens="itensTabela" />
     </v-main>
 
-    <!-- persistent -->
-
     <novo-paciente :abrir.sync="abrirNovoPaciente"/>
-    <nova-atividade :abrir.sync="abrirNovaAtividade"/>
+    <nova-atividade :abrir.sync="abrirNovaAtividade" @refresh="atualizar"/>
   </v-app>
 </template>
 
@@ -88,6 +86,8 @@ import NavBar from "./components/NavBar";
 import DataTable from "./components/DataTable";
 import NovoPaciente from "./components/NovoPaciente";
 import NovaAtividade from "./components/NovaAtividade";
+import AtividadesController from "./controllers/AtividadesController";
+import ListaAtividades from "./classes/ListaAtividades";
 import {mask} from 'vue-the-mask'
 
 export default {
@@ -118,7 +118,11 @@ export default {
     date: new Date().toISOString().substr(0, 10),
     abrirNovoPaciente: false,
     abrirNovaAtividade: false,
+    itensTabela: []
   }),
+  mounted(){
+    this.atualizar()
+  },
   computed: {
     dataFormatada() {
       const [ano, mes, dia] = this.date.split("-");
@@ -133,6 +137,19 @@ export default {
     novaAtividade() {
       this.abrirNovaAtividade = true;
     },
+    
+    async atualizar() {
+      try {
+        const atividadesController = new AtividadesController()
+        const resultado = await atividadesController.BuscarAtividades()
+        const atividades = new ListaAtividades()
+        atividades.lista= resultado.data
+        this.itensTabela = atividades.itens
+      } catch (error) {
+
+        console.error(error.message)
+      }
+    }
   },
 };
 </script>

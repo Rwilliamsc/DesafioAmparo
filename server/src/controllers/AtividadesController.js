@@ -6,7 +6,7 @@ class AtividadesController extends Controller {
     this.modelo = app.datasource.models.Atividades
     this.includesConsulta = [
       {
-        association: 'Paciente'
+        association: 'paciente'
       }
     ]
   }

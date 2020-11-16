@@ -34,7 +34,7 @@ export default (sequelize, DataTypes) => {
   })
 
   Atividades.associate = (models) => {
-    Atividades.belongsTo(models.Paciente, { foreignKey: 'codigoPaciente', as: 'Paciente' })
+    Atividades.belongsTo(models.Paciente, { foreignKey: 'codigoPaciente', as: 'paciente' })
   }
 
   return Atividades

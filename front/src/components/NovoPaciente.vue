@@ -45,6 +45,7 @@
 
 <script>
 import Paciente from "../classes/Paciente";
+import PacienteController from "../controllers/PacienteController";
 import {mask} from 'vue-the-mask'
 export default {
   directives: {
@@ -71,9 +72,15 @@ export default {
     }
   },
   methods:{
-    cadastrar() {
-      console.log(this.paciente)
-      this.fechar()
+    async cadastrar() {
+      try {
+        delete this.paciente.codigo
+        const controller = new PacienteController()
+        await controller.gravarPaciente(this.paciente)
+        this.fechar()
+      } catch (error) {
+        console.error(error.message);
+      }
     },
 
     fechar(){
