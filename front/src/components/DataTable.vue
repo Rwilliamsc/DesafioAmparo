@@ -47,7 +47,7 @@ export default {
     ],
     page: 1,
     pageCount: 0,
-    itemsPerPage: 5,
+    itemsPerPage: 10,
   }),
   methods: {
     itemSelected(ev) {
