@@ -34,7 +34,7 @@
               class="mx-2"
               outlined
               dense
-              mask="###.###.###-##"
+              v-mask="'###.###.###-##'" 
             ></v-text-field>
             <v-text-field
               label="Status Aprazamento"
@@ -77,55 +77,30 @@
     </v-main>
 
     <!-- persistent -->
-    <v-dialog
-      v-model="dialogPaciente"
-      :overlay="false"
-      max-width="500px"
-      transition="dialog-transition"
-    >
-      <v-card>
-        <v-card-text>
-          <v-row no-gutters class="pt-5">
-            <v-col cols="12" sm="6" class="pr-1">
-              <v-text-field label="CPF" dense outlined></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" class="pl-1">
-              <v-text-field label="Nome" dense outlined></v-text-field>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-row no-gutters>
-            <v-col class="text-end align-content-space">
-              <v-btn color="success">Confirmar</v-btn>
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
-    <v-dialog
-      v-model="dialogAtividade"
-      :overlay="false"
-      max-width="500px"
-      transition="dialog-transition"
-    >
-      <v-card> </v-card>
-    </v-dialog>
+    <novo-paciente :abrir.sync="abrirNovoPaciente"/>
+    <nova-atividade :abrir.sync="abrirNovaAtividade"/>
   </v-app>
 </template>
 
 <script>
 import NavBar from "./components/NavBar";
 import DataTable from "./components/DataTable";
+import NovoPaciente from "./components/NovoPaciente";
+import NovaAtividade from "./components/NovaAtividade";
+import {mask} from 'vue-the-mask'
 
 export default {
   name: "App",
   components: {
     NavBar,
     DataTable,
+    NovoPaciente,
+    NovaAtividade
   },
-
+  directives: {
+    mask
+  },
   data: () => ({
     itemsBreadcrumbs: [
       {
@@ -141,8 +116,8 @@ export default {
     ],
     menu: false,
     date: new Date().toISOString().substr(0, 10),
-    dialogPaciente: false,
-    dialogAtividade: false,
+    abrirNovoPaciente: false,
+    abrirNovaAtividade: false,
   }),
   computed: {
     dataFormatada() {
@@ -152,10 +127,11 @@ export default {
   },
   methods: {
     novoPaciente() {
-      this.dialogPaciente = true;
+      this.abrirNovoPaciente = true;
     },
+
     novaAtividade() {
-      this.dialogAtividade = true;
+      this.abrirNovaAtividade = true;
     },
   },
 };
