@@ -131,7 +131,7 @@ export default {
     async atualizar() {
       try {
         const atividadesController = new AtividadesController()
-        const resultado = await atividadesController.BuscarAtividades()
+        const resultado = await atividadesController.buscarAtividades()
         const atividades = new ListaAtividades()
         atividades.lista= resultado.data
         this.itensTabela = atividades.itens

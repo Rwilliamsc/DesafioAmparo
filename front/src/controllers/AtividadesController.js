@@ -2,7 +2,7 @@ import Controller from "./Controller";
 
 export default class AtividadesController extends Controller {
 
-  async BuscarAtividades(){
+  async buscarAtividades(){
     return this.rest.get(`/atividades`)
   }
 

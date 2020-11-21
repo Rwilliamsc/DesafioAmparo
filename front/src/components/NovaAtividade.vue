@@ -154,7 +154,7 @@ export default {
         try {
           const paciente = new PacienteController()
           this.isLoading = true
-          const resultado = await paciente.BuscarPaciente(newValue)
+          const resultado = await paciente.buscarPaciente(newValue)
           this.pacientes = resultado.data
         } catch (error) {
           console.error(error.message)
